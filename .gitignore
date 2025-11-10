@@ -6,6 +6,7 @@
 *.ko
 *.obj
 *.elf
+hashmap-c
 
 # Linker output
 *.ilk
