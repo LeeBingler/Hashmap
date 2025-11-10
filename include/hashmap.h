@@ -5,18 +5,20 @@
 
 typedef struct entry {
     uint64_t hash;
-    uint64_t data;
+    const void *data;
 } entry_t;
 
 typedef struct hashmap {
-    char *yes;
+    int nb_entry;
+    int max_size;
     entry_t *entry;
-    size_t elmSize;
+    size_t elm_size;
 } hashmap_t;
 
 
 
 hashmap_t *new_hashmap(size_t elmSize);
+const void *set_hashmap(hashmap_t *map, const void *key, const void *item);
 void free_hashmap(hashmap_t *map);
 
 #endif
