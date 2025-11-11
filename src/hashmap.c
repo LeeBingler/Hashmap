@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <time.h>
 #include "hashmap.h"
 
 #define DEFAULT_MAX_SIZE_HASHMAP 16
@@ -21,8 +22,10 @@ hashmap_t *new_hashmap(size_t elm_size) {
 
     map->elm_size = elm_size;
     map->max_size = DEFAULT_MAX_SIZE_HASHMAP;
-    map->seed0 = 0;
-    map->seed1 = 1;
+
+    srand(time(NULL));
+    map->seed0 = rand();
+    map->seed1 = rand();
 
     return map;
 }
