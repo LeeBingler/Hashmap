@@ -63,6 +63,10 @@ int set_hashmap(hashmap_t *map, const void *key, const void *item) {
     return 0;
 }
 
+int count_hashmap(hashmap_t *map) {
+    return map->nb_entry;
+}
+
 void *get_hashmap(hashmap_t *map, const void *key) {
     if (!map || !key) return NULL;
 
@@ -77,35 +81,4 @@ void *get_hashmap(hashmap_t *map, const void *key) {
     }
 
     return NULL;
-}
-
-static void free_entry_node(entry_t *node) {
-    free(node->data);
-    free((void *) node->key);
-    free(node);
-}
-
-static void free_entry(hashmap_t *map) {
-    entry_t *node = NULL;
-    entry_t *next = NULL;
-
-    for (int i = 0; i < map->max_size; i++) {
-        if (map->entry[i] == NULL) continue;
-        node = map->entry[i];
-
-        while(node->next != NULL) {
-            next = node->next;
-            free_entry_node(node);
-            node = next;
-        }
-        free_entry_node(node);
-    }
-}
-
-void free_hashmap(hashmap_t *map) {
-    if (!map) return;
-
-    free_entry(map);
-    free(map->entry);
-    free(map);
 }

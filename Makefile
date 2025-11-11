@@ -9,6 +9,7 @@ DFLAGS	:=	-g3 -DDEBUG
 SRC		:=	src/main.c	\
 			src/hashmap.c	\
 			src/SIPhash.c	\
+			src/free_hashmap.c	\
 
 
 OBJ		:=	$(SRC:.c=.o)

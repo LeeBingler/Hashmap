@@ -2,6 +2,7 @@
 #define HASHMAP_H
 
 #include <stdint.h>
+#include <stddef.h>
 
 typedef struct entry {
     const void *key;
@@ -23,6 +24,7 @@ typedef struct hashmap {
 hashmap_t *new_hashmap(size_t elmSize);
 int set_hashmap(hashmap_t *map, const void *key, const void *item);
 void *get_hashmap(hashmap_t *map, const void *key);
+int count_hashmap(hashmap_t *map);
 void free_hashmap(hashmap_t *map);
 
 
