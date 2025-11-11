@@ -5,11 +5,15 @@
 
 #define DEFAULT_MAX_SIZE_HASHMAP 16
 
+static uint64_t get_hash(hashmap_t *map, const void *key) {
+    return SIP64(key, strlen(key), map->seed0, map->seed1) % (map->max_size - 1);
+}
+
 hashmap_t *new_hashmap(size_t elm_size) {
     hashmap_t *map = calloc(1, sizeof(hashmap_t));
     if (!map) return NULL;
 
-    map->entry = calloc(DEFAULT_MAX_SIZE_HASHMAP, sizeof(entry_t));
+    map->entry = calloc(DEFAULT_MAX_SIZE_HASHMAP, sizeof(entry_t *));
     if (!map->entry) {
         free(map);
         return NULL;
@@ -26,20 +30,79 @@ hashmap_t *new_hashmap(size_t elm_size) {
 int set_hashmap(hashmap_t *map, const void *key, const void *item) {
     if(!map || !key || !item) return -1;
 
-    uint64_t hash = SIP64(key, strlen(key), map->seed0, map->seed1) % (map->max_size - 1);
+    uint64_t hash = get_hash(map, key);
 
-    printf("%ld\n", hash);
+    void *copy = calloc(1, map->elm_size);
+    if(!copy) return -1;
+    memcpy(copy, item, map->elm_size);
 
+    entry_t *node = map->entry[hash];
+    entry_t *new_node = calloc(1, sizeof(entry_t));
 
-    map->entry[hash].key = key;
-    map->entry[hash].data = item;
+    if (node) {
+        while (node->next != NULL) {
+            node = node->next;
+        }
+    }
+
+    new_node->key = strdup(key);
+    new_node->data = copy;
+    new_node->next = NULL;
+
+    if (node) {
+        node->next = new_node;
+    } else {
+        map->entry[hash] = new_node;
+    }
+
     map->nb_entry++;
 
     return 0;
 }
 
+void *get_hashmap(hashmap_t *map, const void *key) {
+    if (!map || !key) return NULL;
+
+    uint64_t hash = get_hash(map, key);
+    entry_t *node = map->entry[hash];
+
+    while (node) {
+        if (strcmp(node->key, key) == 0)
+            return node->data;
+
+        node = node->next;
+    }
+
+    return NULL;
+}
+
+static void free_entry_node(entry_t *node) {
+    free(node->data);
+    free(node->key);
+    free(node);
+}
+
+static void free_entry(hashmap_t *map) {
+    entry_t *node = NULL;
+    entry_t *next = NULL;
+
+    for (int i = 0; i < map->max_size; i++) {
+        if (map->entry[i] == NULL) continue;
+        node = map->entry[i];
+
+        while(node->next != NULL) {
+            next = node->next;
+            free_entry_node(node);
+            node = next;
+        }
+        free_entry_node(node);
+    }
+}
+
 void free_hashmap(hashmap_t *map) {
     if (!map) return;
+
+    free_entry(map);
     free(map->entry);
     free(map);
 }
