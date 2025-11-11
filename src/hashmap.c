@@ -42,17 +42,12 @@ int set_hashmap(hashmap_t *map, const void *key, const void *item) {
     entry_t *node = map->entry[hash];
     entry_t *new_node = calloc(1, sizeof(entry_t));
 
-    if (node) {
-        while (node->next != NULL) {
-            node = node->next;
-        }
-    }
-
     new_node->key = strdup(key);
     new_node->data = copy;
     new_node->next = NULL;
 
     if (node) {
+        while (node->next != NULL) node = node->next;
         node->next = new_node;
     } else {
         map->entry[hash] = new_node;
