@@ -77,3 +77,38 @@ void *get_hashmap(hashmap_t *map, const void *key) {
 
     return NULL;
 }
+
+
+void *delete_hashmap(hashmap_t *map, const void *key) {
+    if (!map || !key) return NULL;
+
+    uint64_t hash = get_hash(map, key);
+    entry_t **head = &map->entry[hash];
+    entry_t *temp = *head;
+    entry_t *prev = NULL;
+    void *data = NULL;
+
+    if (temp && strcmp(temp->key, key) == 0) {
+        *head = temp->next;
+        data = temp->data;
+        free((void *)temp->key);
+        free(temp);
+        return data;
+    }
+
+    while (temp && strcmp(temp->key, key) != 0) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (!temp) return NULL;
+
+    prev->next = temp->next;
+
+    data = temp->data;
+    free((void *)temp->key);
+    free(temp);
+
+    map->nb_entry--;
+    return data;
+}

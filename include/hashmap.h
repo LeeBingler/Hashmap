@@ -25,9 +25,8 @@ hashmap_t *new_hashmap(size_t elmSize);
 int set_hashmap(hashmap_t *map, const void *key, const void *item);
 void *get_hashmap(hashmap_t *map, const void *key);
 int count_hashmap(hashmap_t *map);
+void *delete_hashmap(hashmap_t *map, const void *key);
 void free_hashmap(hashmap_t *map);
-
-
 
 uint64_t SIP64(const uint8_t *in, const size_t inlen, uint64_t seed0, uint64_t seed1);
 #endif
