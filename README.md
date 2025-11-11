@@ -78,6 +78,41 @@ get_hashmap      # get an existing item
 delete_hashmap   # delete and return an item
 ```
 
+## Using the `hashmap-c` Library in Your Project
+
+You can use it either by linking statically (`.a`) or dynamically (`.so`) to your own project.
+
+---
+
+### 1. Build the Library
+Clone the repository and run:
+
+```bash
+make lib
+```
+
+### 2. Include the header
+In your C file, include the public header:
+
+```c
+#include "hashmap.h"
+```
+Make sure your compiler knows where to find it (-Iinclude).
+
+### 3. Link Against the Library
+To compile your program with the hashmap library, use:
+
+```bash
+gcc main.c -I./include -L./lib -lhashmap -o main
+```
+
+### 4. Static Linking (Optional)
+If you prefer a single self-contained executable, link statically instead:
+```bash
+gcc main.c -I./include ./lib/libhashmap.a -o main
+```
+
+
 ## License
 
 This project is released under the MIT License. You are free to use, modify, and distribute it as you wish.
