@@ -6,7 +6,7 @@ NAME	:=	hashmap-c
 CFLAGS	:=	-Wall -Wextra -DNAME_EXEC=\"$(NAME)\" -Iinclude
 DFLAGS	:=	-g3 -DDEBUG
 
-SRC		:=	src/main.c	\
+SRC		:=	test/main.c	\
 			src/hashmap.c	\
 			src/SIPhash.c	\
 			src/free_hashmap.c	\
