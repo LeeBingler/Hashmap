@@ -81,7 +81,7 @@ void *get_hashmap(hashmap_t *map, const void *key) {
 
 static void free_entry_node(entry_t *node) {
     free(node->data);
-    free(node->key);
+    free((void *) node->key);
     free(node);
 }
 
