@@ -1,3 +1,11 @@
+# Hashmap
+
+[Hash map](https://en.wikipedia.org/wiki/Hash_table) implementation in C.
+Inspired by [this repo](https://github.com/tidwall/hashmap.c).
+
+## Example
+
+```c
 #include <stdio.h>
 #include "hashmap.h"
 
@@ -42,3 +50,34 @@ int main(void) {
     free_hashmap(map);
     return 0;
 }
+
+
+
+// output:
+// -- Get users --
+// name=adam age=75
+// name=adam2 age=75
+// name=adam3 age=75
+// name=adam4 age=75
+// not exists
+//
+// -- Delete user --
+// adam2 does not exist
+
+```
+
+## Functions
+
+### Basic
+
+```sh
+new_hashmap      # allocate a new hash map
+free_hashmap     # free the hash map
+set_hashmap      # insert or replace an existing item and return the previous
+get_hashmap      # get an existing item
+delete_hashmap   # delete and return an item
+```
+
+## License
+
+This project is released under the MIT License. You are free to use, modify, and distribute it as you wish.
