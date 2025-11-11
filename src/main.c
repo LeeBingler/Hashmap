@@ -8,8 +8,7 @@ struct user {
 
 int main(void) {
     hashmap_t *map = new_hashmap(sizeof(struct user));
-    putchar(map->max_size + 32);
-    putchar('\n');
+    set_hashmap(map, "adam", &(struct user){ .name="adam", .age=75});
     free_hashmap(map);
     return 0;
 }
